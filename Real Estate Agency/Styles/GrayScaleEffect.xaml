@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:GrayscaleEffect="clr-namespace:GrayscaleEffect;assembly=GrayscaleEffect">
+    <Style x:Key="GrayscaleEffect" TargetType="Image">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ElementName=loginPanel, Path=Visibility}" Value="Visible">
+                <Setter Property="Image.Effect">
+                    <Setter.Value>
+                        <GrayscaleEffect:GrayscaleEffect/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding ElementName=registerPanel, Path=Visibility}" Value="Visible">
+                <Setter Property="Image.Effect">
+                    <Setter.Value>
+                        <GrayscaleEffect:GrayscaleEffect/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

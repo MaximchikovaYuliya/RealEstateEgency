@@ -1,0 +1,556 @@
+﻿<Page x:Class="REA.Views.RealtyPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:viewModel="clr-namespace:REA.ViewModels"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:converter="clr-namespace:REA.Views"
+      xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="1080"
+      Title="RealtyPage">
+
+    <Page.Resources>
+        <converter:VisibilityToNullableBooleanConverter x:Key="VisibilityToNullableBooleanConverter"/>
+    </Page.Resources>
+
+    <Page.DataContext>
+        <viewModel:RealtyPageVM/>
+    </Page.DataContext>
+
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="add">
+            <BeginStoryboard Storyboard="{StaticResource OpenAddPanel}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="hidePanel">
+            <BeginStoryboard x:Name="hideAddPanel_BeginStoryboard" Storyboard="{StaticResource hideAddPanel}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="cancel">
+            <BeginStoryboard x:Name="hideAddPanel_BeginStoryboard1" Storyboard="{StaticResource hideAddPanel}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="arrowButton">
+            <BeginStoryboard Storyboard="{StaticResource ToolPanelOpen}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="arrowButtonHide">
+            <BeginStoryboard x:Name="HideToolPanel_BeginStoryboard" Storyboard="{StaticResource HideToolPanel}"/>
+        </EventTrigger>
+    </Page.Triggers>
+
+    <Grid Background="#FFFAFAFA"
+          Margin="50,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border Background="{StaticResource AccentBrush}">
+            <Viewbox HorizontalAlignment="Left"
+                     VerticalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal">
+                    <Label Foreground="{StaticResource WhiteBrush}"
+                           Content="{DynamicResource _Realty}"/>
+                </StackPanel>
+            </Viewbox>
+        </Border>
+
+        <DockPanel x:Name="dockPanel" Grid.Row="1"
+                   Height="30">
+            <Button x:Name="add" Height="0"
+                    DockPanel.Dock="Left" Margin="20,6,0,6"
+                    Visibility="Visible"
+                    Background="{StaticResource LightBaseBrush}"
+                    BorderBrush="{StaticResource LightBaseBrush}"
+                    Content="{DynamicResource _AddRealty}"/>
+            <Button x:Name="hidePanel" Height="0"
+                    DockPanel.Dock="Left" Margin="10,6,0,6"
+                    Background="{StaticResource LightBaseBrush}"
+                    BorderBrush="{StaticResource LightBaseBrush}"
+                    Content="{DynamicResource _HidePanel}"
+                    Visibility="Collapsed"/>
+            <Button x:Name="update" Height="0"
+                    DockPanel.Dock="Left" Margin="10,6,0,6"
+                    Visibility="Visible"
+                    Background="{StaticResource LightBaseBrush}"
+                    BorderBrush="{StaticResource LightBaseBrush}"
+                    Content="{DynamicResource _Update}"
+                    Command="{Binding UpdateCommand}"/>
+            <Button x:Name="arrowButton"
+                    DockPanel.Dock="Right"
+                    Visibility="Visible"
+                    Width="25" Height="25"
+                    Cursor="Hand" Margin="0,0,20,0"
+                    Style="{StaticResource BaseButtonStyle}"
+                    Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image x:Name="imgBottom" Source="{StaticResource ArrowBottom}"/>
+            </Button>
+            <Button x:Name="arrowButtonHide"
+                    DockPanel.Dock="Right"
+                    Visibility="Collapsed"
+                    Width="25" Height="25"
+                    Cursor="Hand" Margin="0,0,20,0"
+                    Style="{StaticResource BaseButtonStyle}"
+                    Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image x:Name="imgTop" Source="{StaticResource ArrowBottom}" RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-180"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+            </Button>
+            <Button DockPanel.Dock="Right"
+                    Visibility="Visible"
+                    Width="25" Height="25"
+                    Cursor="Hand" Margin="0,0,10,0"
+                    Style="{StaticResource BaseButtonStyle}"
+                    Background="{x:Null}" BorderBrush="{x:Null}"
+                    Command="{Binding CreateExcelCommand}">
+                <Image Source="{StaticResource Print}"/>
+            </Button>
+            <Button DockPanel.Dock="Right"
+                    Visibility="Visible"
+                    Width="25" Height="25"
+                    Cursor="Hand" Margin="0,0,10,0"
+                    Style="{StaticResource BaseButtonStyle}"
+                    Background="{x:Null}" BorderBrush="{x:Null}"
+                    Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItems, ElementName=dataGrid, Mode=OneWay}">
+                <Image Source="{StaticResource TrashGray}"/>
+            </Button>
+
+            <materialDesign:PopupBox DockPanel.Dock="Right"
+                                     StaysOpen="True"
+                                     Margin="0,0,10,0"
+                                     Width="25" Height="25">
+                <materialDesign:PopupBox.ToggleContent>
+                    <Image Source="{StaticResource Search}"/>
+                </materialDesign:PopupBox.ToggleContent>
+                <StackPanel Width="250"
+                            Margin="8">
+                    <TextBlock Text="{DynamicResource _Search}"
+                               FontSize="22"/>
+                    <Expander Header="{DynamicResource _Address}"
+                              Margin="0,20,0,0">
+                        <TextBox Margin="20,10"
+                                 Text="{Binding SearchRealty.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Expander>
+                    <Expander Header="{DynamicResource _Square}"
+                               Margin="0,10,0,0">
+                        <TextBox Margin="20,10"     
+                                 Text="{Binding SearchRealty.Square, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Expander>
+                    <Expander Header="{DynamicResource _Price}"
+                              Margin="0,10,0,0">
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="20,10">
+                            <TextBox Text="{Binding SearchRealty.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Width="150"/>
+                            <ComboBox Width="50" Margin="10,0,0,0"
+                                      VerticalAlignment="Top"
+                                      ItemsSource="{Binding Currency}"
+                                      SelectedItem="{Binding SearchRealty.Currency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </Expander>
+                    <Grid Margin="0,20,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="{DynamicResource _Reset}"
+                                Command="{Binding ClearCommand}"
+                                HorizontalContentAlignment="Center"/>
+                        <Button Grid.Column="1"
+                                Content="{DynamicResource _Apply}"
+                                Command="{Binding SearchCommand}"
+                                HorizontalContentAlignment="Center"/>
+                    </Grid>
+                </StackPanel>
+            </materialDesign:PopupBox>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="{DynamicResource _Total}"
+                       FontSize="14"
+                       VerticalAlignment="Center"/>
+                <Label Content="{Binding Items.Count, Mode=OneWay}"
+                       FontSize="14"
+                       VerticalAlignment="Center"/>
+            </StackPanel>
+
+        </DockPanel>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <materialDesign:Card x:Name="addPanel"
+                                 Width="0"
+                                 Margin="10,0,0,10">
+
+                <Grid Background="{StaticResource WhiteBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Background="{StaticResource AccentBrush}"
+                               Height="50">
+                        <Label Foreground="{StaticResource WhiteBrush}"
+                               Margin="10,0,0,0"
+                               FontSize="14" VerticalAlignment="Center"
+                               Content="{DynamicResource _AddRealty}"/>
+                    </DockPanel>
+
+                    <ScrollViewer Grid.Row="1"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <StackPanel Height="80">
+                                <Label Content="{DynamicResource _Title}"
+                                       Margin="10"/>
+                                <TextBox Text="{Binding NewItem.Name, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                         Margin="15,0">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="TextChanged">
+                                            <cmd:EventToCommand Command="{Binding OnDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </TextBox>
+                            </StackPanel>
+                            <StackPanel MinHeight="80">
+                                <Label Content="{DynamicResource _Address}"
+                                       Margin="10"/>
+                                <TextBox Text="{Binding NewItem.Address, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                         Margin="15,0">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="TextChanged">
+                                            <cmd:EventToCommand Command="{Binding OnDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </TextBox>
+                            </StackPanel>
+                            <StackPanel MinHeight="80">
+                                <Label Content="{DynamicResource _Square}"
+                                       Margin="10"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox Text="{Binding NewItem.Square, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                             Margin="15,0,8,0" Width="240">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="TextChanged">
+                                                <cmd:EventToCommand Command="{Binding OnDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBox>
+                                    <TextBlock Text="{DynamicResource _Meters}"
+                                               VerticalAlignment="Bottom"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Height="95">
+                                <Label Content="{DynamicResource _Price}"
+                                       Margin="10,10,10,0"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox Text="{Binding NewItem.Price, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                             Margin="15,0,10,0" Width="200">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="TextChanged">
+                                                <cmd:EventToCommand Command="{Binding OnDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBox>
+                                    <ComboBox x:Name="currencyColumn"
+                                              materialDesign:HintAssist.Hint="{DynamicResource _Currency}" 
+                                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                              SelectedValuePath="Content"
+                                              SelectedValue="{Binding NewItem.Currency, Mode=TwoWay}">
+                                        <ComboBoxItem Content="USD" IsSelected="True"/>
+                                        <ComboBoxItem Content="EUR"/>
+                                        <ComboBoxItem Content="BYN"/>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Height="80">
+                                <ComboBox materialDesign:HintAssist.Hint="{DynamicResource _TypeOfRealty}" 
+                                          Margin="15,20"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          ItemsSource="{Binding Types, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                          SelectedValue="{Binding NewItem.Type}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <cmd:EventToCommand Command="{Binding OnDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Height="80" Orientation="Horizontal">
+                                <ComboBox materialDesign:HintAssist.Hint="{DynamicResource _Owner}" 
+                                          Margin="15,20,5,20" Width="235"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          ItemsSource="{Binding Owners, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                          SelectedValue="{Binding NewItem.Owner}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <cmd:EventToCommand Command="{Binding OnDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
+                                <materialDesign:PopupBox StaysOpen="True"
+                                                         Margin="0,15,0,0"
+                                                         Width="25" Height="25">
+                                    <materialDesign:PopupBox.ToggleContent>
+                                        <Image Source="{StaticResource Add}" Height="20" Width="20"/>
+                                    </materialDesign:PopupBox.ToggleContent>
+                                    <Grid Width="300"
+                                          Margin="8">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Style="{StaticResource MaterialDesignTitleTextBlock}"
+                                                   Text="{DynamicResource _AddOwner}"
+                                                   Margin="8"/>
+                                        <TextBox Grid.Row="1"
+                                                 materialDesign:HintAssist.Hint="{DynamicResource _Surname}"
+                                                 Text="{Binding NewOwner.Surname, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Margin="8">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="TextChanged">
+                                                    <cmd:EventToCommand Command="{Binding OnOwnerDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </TextBox>
+                                        <TextBox Grid.Row="2"
+                                                 materialDesign:HintAssist.Hint="{DynamicResource _Name}"
+                                                 Text="{Binding NewOwner.Name, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Margin="8">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="TextChanged">
+                                                    <cmd:EventToCommand Command="{Binding OnOwnerDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </TextBox>
+                                        <TextBox Grid.Row="3"
+                                                 materialDesign:HintAssist.Hint="{DynamicResource _Patronymic}"
+                                                 Text="{Binding NewOwner.Patronymic, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                                 Margin="8">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="TextChanged">
+                                                    <cmd:EventToCommand Command="{Binding OnOwnerDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </TextBox>
+                                        <TextBox Grid.Row="4"
+                                                 materialDesign:HintAssist.Hint="{DynamicResource _ExmplPhone}"
+                                                 Text="{Binding NewOwner.Phone, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Margin="8">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="TextChanged">
+                                                    <cmd:EventToCommand Command="{Binding OnOwnerDataChangedCommand, Mode=OneWay}"
+                                                                        PassEventArgsToCommand="True"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </TextBox>
+                                        <TextBox Grid.Row="5"
+                                                 materialDesign:HintAssist.Hint="{DynamicResource _Passport}"
+                                                 Text="{Binding NewOwner.Passport, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Margin="8">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="TextChanged">
+                                                    <cmd:EventToCommand Command="{Binding OnOwnerDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </TextBox>
+                                        <DatePicker Grid.Row="6"
+                                                    materialDesign:HintAssist.Hint="{DynamicResource _Birthday}"
+                                                    SelectedDate="{Binding NewOwner.Birthday, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                                    Margin="8">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="SelectedDateChanged">
+                                                    <cmd:EventToCommand Command="{Binding OnOwnerDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </DatePicker>
+                                        <StackPanel Grid.Row="7"
+                                                    Orientation="Horizontal"
+                                                    HorizontalAlignment="Right">
+                                            <Button Content="{DynamicResource _Cancel}"
+                                                    Command="{Binding CancelOwnerCommand}"/>
+                                            <Button Content="{DynamicResource _Add}"
+                                                    Command="{Binding AddOwnerCommand}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </materialDesign:PopupBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{DynamicResource _Photos}"
+                                       Margin="10"/>
+                                <Button Width="25" Height="25"
+                                        Cursor="Hand" Margin="0,0,10,0"
+                                        Style="{StaticResource BaseButtonStyle}"
+                                        Background="{x:Null}" BorderBrush="{x:Null}"
+                                        Command="{Binding AddPhotoCommand}">
+                                    <Image Source="{StaticResource Add}"/>
+                                </Button>
+                                <Button Width="25" Height="25"
+                                        Cursor="Hand" Margin="0,0,10,0"
+                                        Style="{StaticResource BaseButtonStyle}"
+                                        Background="{x:Null}" BorderBrush="{x:Null}"
+                                        Command="{Binding DeletePhotoCommand}"
+                                        CommandParameter="{Binding SelectedItems, ElementName=photosList}">
+                                    <Image Source="{StaticResource Delete}"/>
+                                </Button>
+                            </StackPanel>
+                            <ListBox  x:Name="photosList"  
+                                      ItemsSource="{Binding Photos}"
+                                      HorizontalAlignment="Center" 
+                                      SelectionMode="Multiple">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="100" Height="100">
+                                            <Image Source="{Binding File}" 
+                                                   Width="Auto" Height="Auto"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <DockPanel Grid.Row="2"
+                               Background="{DynamicResource AccentBrush}">
+                        <Button DockPanel.Dock="Right"
+                                Margin="0,0,10,0"
+                                Content="{DynamicResource _AddRealty}"
+                                Background="{StaticResource LightBaseBrush}"
+                                BorderBrush="{StaticResource LightBaseBrush}"
+                                Command="{Binding AddItemCommand}"/>
+                        <Button x:Name="cancel"
+                                DockPanel.Dock="Left" Foreground="{StaticResource WhiteBrush}"
+                                Content="{DynamicResource _Cancel}"
+                                Background="{x:Null}" BorderBrush="{x:Null}"
+                                Cursor="Hand"
+                                Style="{StaticResource BaseButtonStyle}"
+                                Command="{Binding CancelCommand}"/>
+                    </DockPanel>
+
+                </Grid>
+            </materialDesign:Card>
+
+            <materialDesign:Card Margin="10,5,20,10"
+                                 Grid.Column="1"
+                                 Background="{StaticResource WhiteBrush}">
+                <DataGrid x:Name="dataGrid"                                    
+                          ItemsSource="{Binding Items}"
+                          CanUserSortColumns="True"
+                          CanUserAddRows="False"
+                          AutoGenerateColumns="False"
+                          CanUserDeleteRows="False"
+                          materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                          materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                          ColumnWidth="*"
+                          SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="CellEditEnding">
+                            <cmd:EventToCommand Command="{Binding OnDataTableChangedCommand, Mode=OneWay}"
+                                                PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{DynamicResource _Id}" 
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                            Binding="{Binding Id}" IsReadOnly="True"
+                                            Width="Auto"/>
+                        <DataGridTextColumn Header="{DynamicResource _Title}"
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                            Binding="{Binding Name, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="{DynamicResource _Address}"
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                            Binding="{Binding Address, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="{DynamicResource _Square}"
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                            Binding="{Binding Square, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="{DynamicResource _Price}"
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                            Binding="{Binding Price, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="Auto"/>
+                        <materialDesign:MaterialDataGridComboBoxColumn Header="{DynamicResource _Currency}"
+                                                                       SelectedValueBinding="{Binding Currency}"
+                                                                       ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.Currency}"
+                                                                       Width="Auto"/>
+                        <materialDesign:MaterialDataGridComboBoxColumn Header="{DynamicResource _TypeOfRealty}"
+                                                                       SelectedValueBinding="{Binding Type}"
+                                                                       ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.Types}"/>
+                        <materialDesign:MaterialDataGridComboBoxColumn Header="{DynamicResource _Owner}"
+                                                                       SelectedValueBinding="{Binding Owner}"
+                                                                       ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.Owners}"/>
+                        <DataGridTemplateColumn Header="{DynamicResource _Photos}"
+                                                Width="60">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ToggleButton IsChecked="{Binding Path=DetailsVisibility, Mode=OneWayToSource, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}},
+                                                  Converter={StaticResource VisibilityToNullableBooleanConverter}}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                    <DataGrid.RowDetailsTemplate>
+                        <DataTemplate>
+                            <ListBox ItemsSource="{Binding Photos}"
+                                     HorizontalAlignment="Center" 
+                                     SelectionMode="Single"
+                                     Width="{Binding ActualWidth, ElementName=dataGrid, Mode=OneWay}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="100" Height="100">
+                                            <Image Source="{Binding File}" 
+                                                   Width="Auto" Height="Auto">
+                                                <Image.InputBindings>
+                                                    <MouseBinding MouseAction="LeftDoubleClick"
+                                                                  Command="{Binding DataContext.MouseDoubleClickCommand,
+                                                                    RelativeSource={RelativeSource AncestorType=Page}}" 
+                                                                  CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}"/>
+                                                </Image.InputBindings>
+                                            </Image>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DataTemplate>
+                    </DataGrid.RowDetailsTemplate>
+                </DataGrid>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</Page>

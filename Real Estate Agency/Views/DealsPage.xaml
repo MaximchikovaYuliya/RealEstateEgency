@@ -1,0 +1,303 @@
+﻿<Page x:Class="REA.Views.Deals"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:viewModel="clr-namespace:REA.ViewModels"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="1080"
+      Title="Deals">
+
+    <Page.DataContext>
+        <viewModel:DealsPageVM/>
+    </Page.DataContext>
+
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="add">
+            <BeginStoryboard Storyboard="{StaticResource OpenAddPanel}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="hidePanel">
+            <BeginStoryboard x:Name="hideAddPanel_BeginStoryboard" Storyboard="{StaticResource hideAddPanel}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="cancel">
+            <BeginStoryboard x:Name="hideAddPanel_BeginStoryboard1" Storyboard="{StaticResource hideAddPanel}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="arrowButton">
+            <BeginStoryboard Storyboard="{StaticResource ToolPanelOpen}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="arrowButtonHide">
+            <BeginStoryboard x:Name="HideToolPanel_BeginStoryboard" Storyboard="{StaticResource HideToolPanel}"/>
+        </EventTrigger>
+    </Page.Triggers>
+
+    <Grid Background="#FFFAFAFA"
+          Margin="50,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border Background="{StaticResource AccentBrush}">
+            <Viewbox HorizontalAlignment="Left"
+                     VerticalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal">
+                    <Label Foreground="{StaticResource WhiteBrush}"
+                           Content="{DynamicResource _Deals}"/>
+                </StackPanel>
+            </Viewbox>
+        </Border>
+
+        <DockPanel x:Name="dockPanel" Grid.Row="1"
+                   Height="30">
+            <Button x:Name="add" Height="0"
+                    DockPanel.Dock="Left" Margin="20,6,0,6"
+                    Visibility="Visible"
+                    Background="{StaticResource LightBaseBrush}"
+                    BorderBrush="{StaticResource LightBaseBrush}"
+                    Content="{DynamicResource _AddDeal}"/>
+            <Button x:Name="hidePanel" Height="0"
+                    DockPanel.Dock="Left" Margin="10,6,0,6"
+                    Background="{StaticResource LightBaseBrush}"
+                    BorderBrush="{StaticResource LightBaseBrush}"
+                    Content="{DynamicResource _HidePanel}"
+                    Visibility="Collapsed"/>
+            <Button x:Name="update" Height="0"
+                    DockPanel.Dock="Left" Margin="10,6,0,6"
+                    Visibility="Visible"
+                    Background="{StaticResource LightBaseBrush}"
+                    BorderBrush="{StaticResource LightBaseBrush}"
+                    Content="{DynamicResource _Update}"
+                    Command="{Binding UpdateCommand}"/>
+            <Button Height="0"
+                    DockPanel.Dock="Left" Margin="10,6,0,6"
+                    Visibility="Visible"
+                    Background="{StaticResource LightBaseBrush}"
+                    BorderBrush="{StaticResource LightBaseBrush}"
+                    Content="{DynamicResource _MakeContract}"
+                    Command="{Binding MakeContractCommand}"/>
+            <Button x:Name="arrowButton"
+                    DockPanel.Dock="Right"
+                    Visibility="Visible"
+                    Width="25" Height="25"
+                    Cursor="Hand" Margin="0,0,20,0"
+                    Style="{StaticResource BaseButtonStyle}"
+                    Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image x:Name="imgBottom" Source="{StaticResource ArrowBottom}"/>
+            </Button>
+            <Button x:Name="arrowButtonHide"
+                    DockPanel.Dock="Right"
+                    Visibility="Collapsed"
+                    Width="25" Height="25"
+                    Cursor="Hand" Margin="0,0,20,0"
+                    Style="{StaticResource BaseButtonStyle}"
+                    Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image x:Name="imgTop" Source="{StaticResource ArrowBottom}" RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-180"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+            </Button>
+            <Button DockPanel.Dock="Right"
+                    Visibility="Visible"
+                    Width="25" Height="25"
+                    Cursor="Hand" Margin="0,0,10,0"
+                    Style="{StaticResource BaseButtonStyle}"
+                    Background="{x:Null}" BorderBrush="{x:Null}"
+                    Command="{Binding CreateExcelCommand}">
+                <Image Source="{StaticResource Print}"/>
+            </Button>
+            <Button DockPanel.Dock="Right"
+                    Visibility="Visible"
+                    Width="25" Height="25"
+                    Cursor="Hand" Margin="0,0,10,0"
+                    Style="{StaticResource BaseButtonStyle}"
+                    Background="{x:Null}" BorderBrush="{x:Null}"
+                    Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItems, ElementName=dataGrid, Mode=OneWay}">
+                <Image Source="{StaticResource TrashGray}"/>
+            </Button>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="{DynamicResource _Total}"
+                       FontSize="14"
+                       VerticalAlignment="Center"/>
+                <Label Content="{Binding Deals.Count, Mode=OneWay}"
+                       FontSize="14"
+                       VerticalAlignment="Center"/>
+            </StackPanel>
+
+        </DockPanel>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <materialDesign:Card x:Name="addPanel"
+                                 Width="0"
+                                 Margin="10,0,0,10">
+
+                <Grid Background="{StaticResource WhiteBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Background="{StaticResource AccentBrush}"
+                               Height="50">
+                        <Label Foreground="{StaticResource WhiteBrush}"
+                               Margin="10,0,0,0"
+                               FontSize="14" VerticalAlignment="Center"
+                               Content="{DynamicResource _AddDeal}"/>
+                    </DockPanel>
+
+                    <ScrollViewer Grid.Row="1"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <StackPanel Height="80">
+                                <ComboBox materialDesign:HintAssist.Hint="{DynamicResource _TypeOfDeal}" 
+                                          Margin="15,20"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          ItemsSource="{Binding Types, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                          SelectedValue="{Binding NewItem.Type}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <cmd:EventToCommand Command="{Binding OnDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Height="80">
+                                <ComboBox materialDesign:HintAssist.Hint="{DynamicResource _Realty}" 
+                                          Margin="15,20"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          ItemsSource="{Binding Realty}"
+                                          SelectedValue="{Binding NewItem.Realty}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <cmd:EventToCommand Command="{Binding OnDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Height="80">
+                                <ComboBox materialDesign:HintAssist.Hint="{DynamicResource _Client}" 
+                                          Margin="15,20"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          ItemsSource="{Binding Clients}"
+                                          SelectedValue="{Binding NewItem.Client}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <cmd:EventToCommand Command="{Binding OnDataChangedCommand, Mode=OneWay}"
+                                                                PassEventArgsToCommand="True"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel MinHeight="80">
+                                <Label Content="{DynamicResource _AddInfo}"
+                                       Margin="10"/>
+                                <TextBox Text="{Binding NewItem.AdditionalInfo}"
+                                         TextWrapping="Wrap"
+                                         VerticalAlignment="Stretch"
+                                         VerticalScrollBarVisibility="Auto"
+                                         Margin="15,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <DockPanel Grid.Row="2"
+                               Background="{DynamicResource AccentBrush}">
+                        <Button DockPanel.Dock="Right"
+                                Margin="0,0,10,0"
+                                Content="{DynamicResource _AddDeal}"
+                                Background="{StaticResource LightBaseBrush}"
+                                BorderBrush="{StaticResource LightBaseBrush}"
+                                Command="{Binding AddItemCommand}"/>
+                        <Button x:Name="cancel"
+                                DockPanel.Dock="Left" Foreground="{StaticResource WhiteBrush}"
+                                Content="{DynamicResource _Cancel}"
+                                Background="{x:Null}" BorderBrush="{x:Null}"
+                                Cursor="Hand"
+                                Style="{StaticResource BaseButtonStyle}"
+                                Command="{Binding CancelCommand}"/>
+                    </DockPanel>
+
+                </Grid>
+            </materialDesign:Card>
+
+            <materialDesign:Card Margin="10,5,20,10"
+                                 Grid.Column="1"
+                                 Background="{StaticResource WhiteBrush}">
+                <DataGrid x:Name="dataGrid"                                    
+                          ItemsSource="{Binding Items}"
+                          CanUserSortColumns="True"
+                          CanUserAddRows="False"
+                          AutoGenerateColumns="False"
+                          CanUserDeleteRows="False"
+                          materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                          materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                          ColumnWidth="*">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="Auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource BaseButtonStyle}"
+                                            Cursor="Hand" Padding="0"
+                                            ToolTip="{DynamicResource _MakeContract}"
+                                            Background="{x:Null}" BorderBrush="{x:Null}"
+                                            Command="{Binding DataContext.MakeContractCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" 
+                                            CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}">
+                                        <Image Source="{StaticResource Contract}"
+                                               Height="20" Width="20"/>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{DynamicResource _Id}" 
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                            Binding="{Binding Id}" IsReadOnly="True"
+                                            Width="Auto"/>
+                        <DataGridTextColumn Header="{DynamicResource _Employee}" 
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                            Binding="{Binding Employee}" IsReadOnly="True"/>
+                        <materialDesign:MaterialDataGridComboBoxColumn Header="{DynamicResource _TypeOfDeal}"
+                                                                       SelectedValueBinding="{Binding Type}"
+                                                                       ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.Types}"/>
+                        <materialDesign:MaterialDataGridComboBoxColumn Header="{DynamicResource _Client}"
+                                                                       SelectedValueBinding="{Binding Client}"
+                                                                       ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.Clients}"/>
+                        <materialDesign:MaterialDataGridComboBoxColumn Header="{DynamicResource _Realty}"
+                                                                       SelectedValueBinding="{Binding Realty}"
+                                                                       ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=DataContext.Realty}"/>
+                        <DataGridTemplateColumn Header="{DynamicResource _Date}"
+                                                Width="Auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <DatePicker SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                Padding="0"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{DynamicResource _AddInfo}" 
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                            Binding="{Binding AdditionalInfo}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</Page>
