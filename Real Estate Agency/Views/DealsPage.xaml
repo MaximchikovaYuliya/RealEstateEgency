@@ -129,7 +129,7 @@
                 <Label Content="{DynamicResource _Total}"
                        FontSize="14"
                        VerticalAlignment="Center"/>
-                <Label Content="{Binding Deals.Count, Mode=OneWay}"
+                <Label Content="{Binding Items.Count, Mode=OneWay}"
                        FontSize="14"
                        VerticalAlignment="Center"/>
             </StackPanel>

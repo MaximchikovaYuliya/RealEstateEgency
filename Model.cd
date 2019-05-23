@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="REA.Models.Client">
+    <Position X="11.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQCACAAAAAAAQAECBAAAAQABAAIAAACAAAAIEAAABA=</HashCode>
+      <FileName>Models\Client.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" />
+  </Class>
+  <Class Name="REA.Models.Employee">
+    <Position X="12.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQAACAAACAEASAECBAAAAQABAAIAAACAAAAIEAAABA=</HashCode>
+      <FileName>Models\Employee.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Photo" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="REA.Models.EmployeesPhoto">
+    <Position X="10" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAACAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\EmployeesPhoto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REA.Models.Owner">
+    <Position X="18.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCACAAAAAAAQAECBAAAAYABAAIAAAAAAAAIAAAABA=</HashCode>
+      <FileName>Models\Owner.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="REA.Models.Realty">
+    <Position X="16.25" Y="4.75" Width="1.5" />
+    <AssociationLine Name="Owner" Type="REA.Models.Owner">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.029" Y="0.115" Height="0.182" Width="0.695" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ABACAACIAQAAASAECAAAAAQACAAAAAAiAQAgAEAAAAA=</HashCode>
+      <FileName>Models\Realty.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Owner" />
+      <Property Name="Type" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="REA.Models.RealtyPhoto">
+    <Position X="18" Y="2.25" Width="1.5" />
+    <AssociationLine Name="Realty" Type="REA.Models.Realty" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18.219" Y="3.738" />
+        <Point X="18.219" Y="4.375" />
+        <Point X="17.562" Y="4.375" />
+        <Point X="17.562" Y="4.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.37" Y="0.751" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACQAAAAAACAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\RealtyPhoto.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Realty" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="REA.Models.TypeOfDeal">
+    <Position X="14" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABACIAAAAAAgAQAECAAAAAQAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Models\TypeOfDeal.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="REA.Models.TypeOfRealty">
+    <Position X="16.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACIAAAAAAgAQAECAAAAAYAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\TypeOfRealty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="REA.Models.Deal">
+    <Position X="14" Y="4.75" Width="1.5" />
+    <AssociationLine Name="Client" Type="REA.Models.Client">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.091" Y="0.12" Height="0.182" Width="0.681" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Employee" Type="REA.Models.Employee" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14" Y="6.062" />
+        <Point X="13.5" Y="6.062" />
+        <Point X="13.5" Y="5.449" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.081" Y="0.1" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>gAACQAAAABACAQAAiQCAAAAACAAAAAAhAQAAAAAAAAQ=</HashCode>
+      <FileName>Models\Deal.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Client" />
+      <Property Name="Employee" />
+      <Property Name="Realty" />
+      <Property Name="Type" />
+    </ShowAsAssociation>
+    <Lollipop Orientation="Bottom" Position="0.225" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
