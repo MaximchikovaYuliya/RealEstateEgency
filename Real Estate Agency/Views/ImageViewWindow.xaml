@@ -4,8 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:REA.ViewModels"
-        xmlns:cmd="http://www.galasoft.ch/mvvmlight"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="ImageViewWindow"
         WindowStyle="None" WindowStartupLocation="CenterScreen"
@@ -26,11 +24,10 @@
         <Border BorderThickness="1"
                 BorderBrush="{StaticResource BlackBrush}">
             <Image x:Name="image" Source="{Binding Photo.File}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDown">
-                        <cmd:EventToCommand Command="{x:Static SystemCommands.CloseWindowCommand}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+                <Image.InputBindings>
+                    <MouseBinding MouseAction="LeftClick"
+                                  Command="{x:Static SystemCommands.CloseWindowCommand}"/>
+                </Image.InputBindings>
             </Image>
         </Border>
     </Grid>
