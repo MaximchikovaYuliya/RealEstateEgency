@@ -539,7 +539,7 @@
                                                 <Image.InputBindings>
                                                     <MouseBinding MouseAction="LeftDoubleClick"
                                                                   Command="{Binding DataContext.MouseDoubleClickCommand,
-                                                                    RelativeSource={RelativeSource AncestorType=Page}}" 
+                                                                  RelativeSource={RelativeSource AncestorType=Page}}" 
                                                                   CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}"/>
                                                 </Image.InputBindings>
                                             </Image>
