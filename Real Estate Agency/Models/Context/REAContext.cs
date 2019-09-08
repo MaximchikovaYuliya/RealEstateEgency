@@ -4,7 +4,7 @@ namespace REA.Models.Context
 {
     public class REAContext : DbContext
     {
-        public REAContext() : base("DBConnection")
+        public REAContext() : base("DbConnection")
         { }
 
         public DbSet<Deal> Deals { get; set; }
